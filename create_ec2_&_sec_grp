@@ -1,0 +1,25 @@
+Create a SG for SSH access (from internet)
+---------------------------------=--------
+aws ec2 create-security-group --group-name EC2TestSecGrp --description "EC2 Test Security Group for EC2 instances to allow port 22" --vpc-id vpc-cc1adea9
+
+(Get sec Grp IDxxx from screen ouput) then-->
+aws ec2 authorize-security-group-ingress --group-id <Sec Grp IDxxx> --protocol tcp --port 22 --cidr 0.0.0.0/0 --region eu-west-1
+
+
+Create 1 Linux EC2 instance with default 8GB Storage and additional 20GB EBS)
+-----------------------------------------------------------------------------
+(NB- Copy Sec Grp IDxxx from above)
+
+aws ec2 run-instances --image-id ami-0ea3405d2d2522162 --instance-type t2.micro --key-name Calvin_Key_Pair --security-group-ids <Sec Grp IDxxx> --subnet-id subnet-55ed4430 --block-device-mappings DeviceName=/dev/sdh,Ebs={VolumeSize=20} --count 1
+
+Check EC2 instances
+-------------------
+List All instances
+aws ec2 describe-instances 
+
+List 1 specific instance (by id)
+aws ec2 describe-instances --instance-ids i-1234567890abcdef0 
+
+Terminate specific instance
+---------------------------
+aws ec2 terminate-instances --instance-ids i-1234567890abcdef0
